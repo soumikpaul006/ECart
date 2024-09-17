@@ -1,7 +1,10 @@
 package com.example.loginregisterretrofit.model.networklayer
 
+import com.example.loginregisterretrofit.model.datalayer.AddAddressRequest
+import com.example.loginregisterretrofit.model.datalayer.AddAddressResponse
 import com.example.loginregisterretrofit.model.datalayer.AddUserRequest
 import com.example.loginregisterretrofit.model.datalayer.AddUserResponse
+import com.example.loginregisterretrofit.model.datalayer.GetUserAddressResponse
 import com.example.loginregisterretrofit.model.datalayer.LoginUserRequest
 import com.example.loginregisterretrofit.model.datalayer.LoginUserResponse
 import com.example.loginregisterretrofit.model.datalayer.ProductCategoryResponse
@@ -49,5 +52,40 @@ interface ApiService {
     fun getSubCategoryProduct(
         @Path("sub_category_id") scid:Int
     ):Call<SubCategoryProductResponse>
+
+
+    //SEARCH PRODUCT
+
+
+
+
+    //PRODUCT DETAILS
+
+
+
+
+    //ADD ADDRESS
+    @POST("User/address")
+    @Headers("Content-type: application/json")
+    fun postAddress(
+        @Body addressRequest: AddAddressRequest
+    ): Call<AddAddressResponse>
+
+
+    //GET LIST OF ADDRESS
+    @GET("User/addresses/{user_id}")
+    fun getUserAddresses(
+        @Path("user_id") userId: String
+    ): Call<GetUserAddressResponse>
+
+    //PLACE ORDER
+
+
+
+
+    //LOGOUT
+
+
+
 
 }

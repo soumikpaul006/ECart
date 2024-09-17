@@ -37,7 +37,7 @@ class FragmentA : Fragment() {
         // Initialize view binding
         binding = FragmentABinding.inflate(inflater, container, false)
 
-        // Initialize CartViewModel with activity-scoped ViewModelProvider
+
         cartViewModel = ViewModelProvider(requireActivity())[CartViewModel::class.java]
 
 

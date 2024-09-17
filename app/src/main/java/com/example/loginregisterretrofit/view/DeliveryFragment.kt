@@ -1,5 +1,6 @@
 package com.example.loginregisterretrofit.view
 
+import AddressAdapter
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,11 +11,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.loginregisterretrofit.AddressAdapter
+
 import com.example.loginregisterretrofit.PreferenceHelper
 import com.example.loginregisterretrofit.R
 import com.example.loginregisterretrofit.databinding.FragmentDeliveryBinding
-import com.example.loginregisterretrofit.model.datalayer.Address
+import com.example.loginregisterretrofit.model.datalayer.AddAddressRequest
+
 import com.example.loginregisterretrofit.viewmodel.AddressViewModel
 
 
@@ -48,7 +50,7 @@ class DeliveryFragment : Fragment() {
         binding.recyclerViewAddresses.adapter = adapter
         binding.recyclerViewAddresses.layoutManager = LinearLayoutManager(requireContext())
 
-        // Observe the addresses for the for the particular user and update the adapter
+        // fetch addresses for the particular user and update the adapter
         addressViewModel.getAddressesForUser(userId).observe(viewLifecycleOwner) { addresses ->
             adapter.updateAddressList(addresses)
         }
@@ -57,18 +59,14 @@ class DeliveryFragment : Fragment() {
             showAddAddressDialog(userId)
         }
 
-
-        binding.btnNext.setOnClickListener{
-            //GO TO PAYMENT FRAGMENT HAVING THE INFO OF THE ADDRESS
+        // proceed to the next step (payment) with selected address
+        binding.btnNext.setOnClickListener {
 
         }
-
     }
 
     private fun showAddAddressDialog(userId: String) {
-
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_address, null)
-
 
         val dialog = AlertDialog.Builder(requireContext())
             .setTitle("Add New Address")
@@ -76,23 +74,42 @@ class DeliveryFragment : Fragment() {
             .setPositiveButton("Add") { dialog, _ ->
 
 
-                val addressLine = dialogView.findViewById<EditText>(R.id.etAddressLine).text.toString()
-                val city = dialogView.findViewById<EditText>(R.id.etCity).text.toString()
-                val state = dialogView.findViewById<EditText>(R.id.etState).text.toString()
-                val zipCode = dialogView.findViewById<EditText>(R.id.etZipCode).text.toString()
+
+                val title = dialogView.findViewById<EditText>(R.id.etTitle).text.toString()
+                val addressLine = dialogView.findViewById<EditText>(R.id.etAddress).text.toString()
 
 
-                if (addressLine.isNotEmpty() && city.isNotEmpty() && state.isNotEmpty() && zipCode.isNotEmpty()) {
+                if (title.isNotEmpty() && addressLine.isNotEmpty()) {
 
-                    val newAddress = Address(0, userId, addressLine, city, state, zipCode)
 
-                    //Inserting address in the room
-                    addressViewModel.insert(newAddress)
 
-                    Toast.makeText(requireContext(), "Address Added", Toast.LENGTH_SHORT).show()
+                    val newAddressRequest = AddAddressRequest(user_id = userId.toInt(), title = title, address = addressLine)
+
+
+
+                    // Make API call to submit the new address
+                    addressViewModel.postAddress(newAddressRequest, onSuccess = {
+                        Toast.makeText(requireContext(), "Address added successfully", Toast.LENGTH_SHORT).show()
+
+                        // Directly update the adapter by observing the LiveData
+                        addressViewModel.getAddressesForUser(userId).observe(viewLifecycleOwner) { addresses ->
+                            adapter.updateAddressList(addresses)
+                        }
+
+
+
+                    }, onFailure = {
+                        Toast.makeText(requireContext(), "Failed to add address", Toast.LENGTH_SHORT).show()
+                    })
+
+
+
                 } else {
                     Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 }
+
+
+
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
@@ -103,5 +120,8 @@ class DeliveryFragment : Fragment() {
         dialog.show()
     }
 }
+
+
+
 
 

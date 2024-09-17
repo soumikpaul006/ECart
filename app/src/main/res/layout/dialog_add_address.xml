@@ -6,35 +6,19 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/etAddressLine"
+        android:id="@+id/etTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Address Line"
+        android:hint="Title"
         android:inputType="text"
         android:padding="8dp" />
 
     <EditText
-        android:id="@+id/etCity"
+        android:id="@+id/etAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="City"
+        android:hint="Address"
         android:inputType="text"
-        android:padding="8dp" />
-
-    <EditText
-        android:id="@+id/etState"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="State"
-        android:inputType="text"
-        android:padding="8dp" />
-
-    <EditText
-        android:id="@+id/etZipCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Zip Code"
-        android:inputType="number"
         android:padding="8dp" />
 
 </LinearLayout>
