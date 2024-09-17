@@ -65,7 +65,7 @@ class RegisterActivity : AppCompatActivity() {
                 val result = response.body()
                 if (result?.status == 0) {
 
-                    preferenceHelper.saveRegisterUserSession(email, fullname)
+                    preferenceHelper.saveRegisterUserSession(email, fullname,mobileno)
                     showMessage("Success", result.message)
                     navigateToUserPage()
 

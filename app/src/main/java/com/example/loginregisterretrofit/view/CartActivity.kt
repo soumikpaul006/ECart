@@ -1,5 +1,6 @@
 package com.example.loginregisterretrofit.view
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,11 @@ class CartActivity : AppCompatActivity() {
 
         binding=ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.btnCheckout.setOnClickListener{
+            val intent = Intent(this, CheckoutActivity::class.java)
+            startActivity(intent)
+        }
 
 
         if (savedInstanceState == null) {

@@ -40,12 +40,12 @@ class FragmentA : Fragment() {
         // Initialize CartViewModel with activity-scoped ViewModelProvider
         cartViewModel = ViewModelProvider(requireActivity())[CartViewModel::class.java]
 
-        // Return the root view from the binding
+
         return binding.root
     }
 
     companion object {
-        // Factory method for creating a new instance of FragmentA with arguments
+
         fun newInstance(subcategoryId: String, subcategoryName: String): FragmentA {
             val fragment = FragmentA()
             val bundle = Bundle().apply {
@@ -67,10 +67,10 @@ class FragmentA : Fragment() {
 
 
         binding.btnGoToCart.setOnClickListener {
-            openCartActivity() // Redirect to CartActivity
+            openCartActivity()
         }
 
-        // Fetch and display the products based on the subcategoryId
+
         subcategoryId?.let {
             fetchProducts(it)
         }
@@ -82,7 +82,7 @@ class FragmentA : Fragment() {
         startActivity(intent)
     }
 
-    // Function to fetch products from the API using Retrofit
+    // Function to fetch products
     private fun fetchProducts(subcategoryId: String) {
 
         val call = apiService.getSubCategoryProduct(subcategoryId.toInt())
@@ -97,8 +97,9 @@ class FragmentA : Fragment() {
                     return
                 }
 
-                // Get the response body and set it to the adapter
+
                 val result = response.body()
+
                 result?.let {
                     if (it.products.isNotEmpty()) {
                         adapter = SubCategoryAdapter(it.products) { product ->

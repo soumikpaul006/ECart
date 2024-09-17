@@ -13,6 +13,7 @@ class PreferenceHelper(context: Context) {
         private const val KEY_USER_EMAIL = "user_email"
         private const val KEY_USER_NAME = "user_name"
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
+        private const val KEY_PHONE_NO="phone_no"
     }
 
     fun saveUserSession(userId: String, email: String, name: String) {
@@ -25,15 +26,15 @@ class PreferenceHelper(context: Context) {
         }
     }
 
-    fun saveRegisterUserSession(email: String, name: String) {
+    fun saveRegisterUserSession(email: String, name: String,phone: String) {
         with(sharedPreferences.edit()) {
             putString(KEY_USER_EMAIL, email)
             putString(KEY_USER_NAME, name)
+            putString(KEY_PHONE_NO, phone)
             putBoolean(KEY_IS_LOGGED_IN, true)
             apply()
         }
     }
-
 
     fun isLoggedIn(): Boolean {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false)
@@ -46,6 +47,10 @@ class PreferenceHelper(context: Context) {
 
     fun getUserName(): String? {
         return sharedPreferences.getString(KEY_USER_NAME, null)
+    }
+
+    fun getPhoneNo(): String? {
+        return sharedPreferences.getString(KEY_PHONE_NO, null)
     }
 
     fun clearUserSession() {

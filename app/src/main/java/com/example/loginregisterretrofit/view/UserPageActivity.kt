@@ -51,7 +51,7 @@ class UserPageActivity : AppCompatActivity(), OnCategoryClickListener, Navigatio
         binding.drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
-        // Set the NavigationView's listener
+
         binding.navView.setNavigationItemSelectedListener(this)
 
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
@@ -91,7 +91,6 @@ class UserPageActivity : AppCompatActivity(), OnCategoryClickListener, Navigatio
         })
     }
 
-    // Handle navigation item clicks in the NavigationView
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.home -> {
@@ -106,6 +105,7 @@ class UserPageActivity : AppCompatActivity(), OnCategoryClickListener, Navigatio
             }
             R.id.profile -> {
                 Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, ProfileActivity::class.java))
             }
             R.id.logout -> {
                 preferenceHelper.clearUserSession()

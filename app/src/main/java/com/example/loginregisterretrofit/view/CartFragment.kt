@@ -32,7 +32,7 @@ class CartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
-        cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
+        cartViewModel = ViewModelProvider(requireActivity())[CartViewModel::class.java]
 
 
         productDao = AppDatabase.getInstance(requireContext()).productDao()
