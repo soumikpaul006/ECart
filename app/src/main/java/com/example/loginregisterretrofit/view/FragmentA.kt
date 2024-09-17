@@ -1,5 +1,6 @@
 package com.example.loginregisterretrofit.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,7 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.loginregisterretrofit.viewmodel.CartViewModel
+import com.example.loginregisterretrofit.R
 import com.example.loginregisterretrofit.SubCategoryAdapter
 import com.example.loginregisterretrofit.model.datalayer.SubCategoryProductResponse
 import com.example.loginregisterretrofit.databinding.FragmentABinding
@@ -17,11 +21,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
+
 class FragmentA : Fragment() {
 
     private lateinit var binding: FragmentABinding
-    private val apiService = ApiClient.retrofit.create(ApiService::class.java)
+    private lateinit var cartViewModel: CartViewModel
     private lateinit var adapter: SubCategoryAdapter
+    private val apiService = ApiClient.retrofit.create(ApiService::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,39 +36,53 @@ class FragmentA : Fragment() {
     ): View {
         // Initialize view binding
         binding = FragmentABinding.inflate(inflater, container, false)
+
+        // Initialize CartViewModel with activity-scoped ViewModelProvider
+        cartViewModel = ViewModelProvider(requireActivity())[CartViewModel::class.java]
+
+        // Return the root view from the binding
         return binding.root
     }
 
     companion object {
+        // Factory method for creating a new instance of FragmentA with arguments
         fun newInstance(subcategoryId: String, subcategoryName: String): FragmentA {
             val fragment = FragmentA()
-            val bundle = Bundle()
-            bundle.putString("subcategory_id", subcategoryId)
-            bundle.putString("subcategory_name", subcategoryName)
+            val bundle = Bundle().apply {
+                putString("subcategory_id", subcategoryId)
+                putString("subcategory_name", subcategoryName)
+            }
             fragment.arguments = bundle
             return fragment
         }
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val subcategoryId = arguments?.getString("subcategory_id")
-//        val subcategoryName = arguments?.getString("subcategory_name")
 
-
-//        binding.textViewSubcategoryName.text = subcategoryName
 
         binding.recyclerSubCatProView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Fetching products based on the subcategory_id (Android, iPhone ....)
+
+        binding.btnGoToCart.setOnClickListener {
+            openCartActivity() // Redirect to CartActivity
+        }
+
+        // Fetch and display the products based on the subcategoryId
         subcategoryId?.let {
             fetchProducts(it)
         }
     }
 
+
+    private fun openCartActivity() {
+        val intent = Intent(requireContext(), CartActivity::class.java)
+        startActivity(intent)
+    }
+
+    // Function to fetch products from the API using Retrofit
     private fun fetchProducts(subcategoryId: String) {
 
         val call = apiService.getSubCategoryProduct(subcategoryId.toInt())
@@ -76,16 +97,15 @@ class FragmentA : Fragment() {
                     return
                 }
 
+                // Get the response body and set it to the adapter
                 val result = response.body()
-                Log.d("SearchResult", "onResponse: $result")
-
                 result?.let {
                     if (it.products.isNotEmpty()) {
-
-                        adapter = SubCategoryAdapter(it.products)
+                        adapter = SubCategoryAdapter(it.products) { product ->
+                            cartViewModel.addToCart(product)  // Add product to cart
+                            Toast.makeText(requireContext(), "${product.product_name} added to cart", Toast.LENGTH_SHORT).show()
+                        }
                         binding.recyclerSubCatProView.adapter = adapter
-                        adapter.notifyDataSetChanged()
-
                     } else {
                         Toast.makeText(requireContext(), "No products available", Toast.LENGTH_SHORT).show()
                     }
@@ -93,9 +113,13 @@ class FragmentA : Fragment() {
             }
 
             override fun onFailure(call: Call<SubCategoryProductResponse>, t: Throwable) {
-                t.printStackTrace()
                 Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 }
+
+
+
+
+

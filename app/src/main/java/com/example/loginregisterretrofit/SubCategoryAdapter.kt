@@ -9,6 +9,7 @@ import com.example.loginregisterretrofit.databinding.SubcategoryViewBinding
 
 class SubCategoryAdapter(
     private val subcatList:List<Product>,
+    private val addToCartCallback: (Product) -> Unit
 ):RecyclerView.Adapter<SubCategoryAdapter.SubCategoryViewHolder>() {
 
     private lateinit var binding:SubcategoryViewBinding
@@ -32,28 +33,23 @@ class SubCategoryAdapter(
         return subcatList.size
     }
 
-    inner class SubCategoryViewHolder(private val itemView:SubcategoryViewBinding):RecyclerView.ViewHolder(itemView.root)
-    {
-        fun setData(products: Product)
-        {
-            with(binding)
-            {
-                txtSubCategoryProductName.text=products.product_name
-                txtSubCategoryProductDescription.text=products.description
+    inner class SubCategoryViewHolder(private val binding: SubcategoryViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-                val imageUrl = "https://apolisrises.co.in/myshop/images/" + products.product_image_url
+        fun setData(product: Product) {
+            with(binding) {
+                txtSubCategoryProductName.text = product.product_name
+                txtSubCategoryProductDescription.text = product.description
+
+                // Load image using Glide or any image loader
                 Glide.with(imgSubCategory.context)
-                    .load(imageUrl)
+                    .load("https://apolisrises.co.in/myshop/images/${product.product_image_url}")
                     .into(imgSubCategory)
 
-                val rating = products.average_rating.toFloatOrNull()
-
-                if (rating != null) {
-                    txtSubCategoryProductRating.rating = rating
+                btnAddToCart.setOnClickListener {
+                    addToCartCallback(product) // Pass the selected product to the callback
                 }
-
             }
-
         }
     }
 }

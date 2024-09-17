@@ -8,6 +8,7 @@
     android:background="@color/white"
     tools:context=".view.MainActivity">
 
+
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="150dp"
@@ -55,5 +56,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,9 +57,11 @@ class ViewPagerActivity : AppCompatActivity() {
 
                 result?.let {
                     if (it.subcategories.isNotEmpty()) {
+
                         val fragments = it.subcategories.map { subcategory ->
                             FragmentA.newInstance(subcategory.subcategory_id, subcategory.subcategory_name)
                         }
+
 
                         val adapter = ViewPagerAdapter(fragments, this@ViewPagerActivity)
                         binding.viewPager.adapter = adapter
