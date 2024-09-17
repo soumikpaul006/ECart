@@ -7,31 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.loginregisterretrofit.PreferenceHelper
 import com.example.loginregisterretrofit.databinding.ActivityMainBinding
 
-//class MainActivity : AppCompatActivity() {
-//
-//    private lateinit var binding: ActivityMainBinding
-//
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//
-//        binding=ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        // Handle the register button click
-//        binding.btnRegister.setOnClickListener {
-//            startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
-//        }
-//
-//        // Handle the login text click
-//        binding.txtLogin.setOnClickListener {
-//            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-//        }
-//    }
-//}
-
-
 
 class MainActivity : AppCompatActivity() {
 

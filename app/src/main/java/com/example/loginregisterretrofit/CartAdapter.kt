@@ -29,18 +29,18 @@ class CartAdapter(
     inner class CartViewHolder(private val binding: CartItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
-            // Set initial values for the product in the UI
+
             binding.txtProductName.text = product.product_name
             binding.txtProductQuantity.text = "Quantity: ${product.quantity}"
             binding.txtProductPrice.text = "Price: $${String.format("%.2f", product.price.toDouble())}"
 
-            // Setup listener to increase quantity
+
             binding.btnIncreaseQuantity.setOnClickListener {
                 product.quantity += 1
                 updateItem(product)
             }
 
-            // Setup listener to decrease quantity
+
             binding.btnDecreaseQuantity.setOnClickListener {
                 if (product.quantity > 1) {
                     product.quantity -= 1
@@ -51,7 +51,7 @@ class CartAdapter(
 
         // Function to update item views and update quantity in the database
         private fun updateItem(product: Product) {
-            // Update the quantity TextView
+
             binding.txtProductQuantity.text = "Quantity: ${product.quantity}"
 
             // Calculate and update the price for the individual product
@@ -59,7 +59,10 @@ class CartAdapter(
             binding.txtProductPrice.text = "Price: $${String.format("%.2f", totalPriceForProduct)}"
 
             // Update the product in the Room database
-            Thread { productDao.updateProduct(product) }.start()
+            Thread {
+                productDao.updateProduct(product)
+            }.start()
+
 
             // Notify the fragment or activity to update the total cart price
             updateTotalPriceCallback(getTotalPrice())

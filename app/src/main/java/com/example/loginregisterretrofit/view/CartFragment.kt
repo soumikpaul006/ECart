@@ -6,12 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.loginregisterretrofit.CartAdapter
 import com.example.loginregisterretrofit.viewmodel.CartViewModel
 import com.example.loginregisterretrofit.databinding.FragmentCartBinding
 import com.example.loginregisterretrofit.model.AppDatabase
 import com.example.loginregisterretrofit.model.dao.ProductDao
+import com.example.loginregisterretrofit.model.datalayer.Product
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class CartFragment : Fragment() {
@@ -28,7 +34,7 @@ class CartFragment : Fragment() {
         binding = FragmentCartBinding.inflate(inflater, container, false)
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
 
-        // Initialize productDao from the database
+
         productDao = AppDatabase.getInstance(requireContext()).productDao()
 
         return binding.root
@@ -37,7 +43,7 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up RecyclerView
+
         binding.recyclerViewCart.layoutManager = LinearLayoutManager(requireContext())
 
         // Observe cart items and update RecyclerView
@@ -45,7 +51,32 @@ class CartFragment : Fragment() {
             adapter = CartAdapter(cartItems, productDao) { totalPrice ->
                 updateTotalPrice(totalPrice)
             }
+
             binding.recyclerViewCart.adapter = adapter
+
+            // Set up ItemTouchHelper for swipe-to-delete functionality
+            val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    // Get the product to delete
+                    val position = viewHolder.adapterPosition
+                    val productToDelete = cartItems[position]
+
+                    // Delete the product from the database and update UI
+                    deleteProduct(productToDelete)
+                    adapter.notifyItemRemoved(position)
+                }
+            }
+
+            val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+            itemTouchHelper.attachToRecyclerView(binding.recyclerViewCart)
 
             // Update total price when cart items are loaded
             val initialTotalPrice = cartItems.sumOf { it.quantity * it.price.toDouble() }
@@ -53,8 +84,16 @@ class CartFragment : Fragment() {
         }
     }
 
-    // Function to update total price in the UI
+    // Update total price in the UI
     private fun updateTotalPrice(totalPrice: Double) {
         binding.txtTotalPrice.text = "Total Price: $${String.format("%.2f", totalPrice)}"
+    }
+
+
+    // Delete a product from Room and update the UI
+    private fun deleteProduct(product: Product) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            productDao.deleteProduct(product)
+        }
     }
 }
