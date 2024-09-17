@@ -31,13 +31,13 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize ViewModel
+
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
-        // Initialize Shared Preferences Helper
+
         preferenceHelper = PreferenceHelper(this)
 
-        // Check if user is already logged in
+
         checkPreferenceExist()
 
         binding.btnLogin.setOnClickListener {
@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
             viewModel.login(email, password)
         }
 
-        // Observe the ViewModel's login response
+
         observeViewModel()
     }
 

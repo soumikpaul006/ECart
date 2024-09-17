@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Shared Preferences Helper
+
         preferenceHelper = PreferenceHelper(this)
 
         // Check if the user is already logged in
@@ -36,12 +36,12 @@ class MainActivity : AppCompatActivity() {
             navigateToUserPage()
 
         } else {
-            // Handle the register button click
+
             binding.btnRegister.setOnClickListener {
                 startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
             }
 
-            // Handle the login text click
+
             binding.txtLogin.setOnClickListener {
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
             }
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, UserPageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK  //FLAG_ACTIVITY_NEW_TASK: Starts the activity in a new task. //FLAG_ACTIVITY_CLEAR_TASK: Clears all previous activities in the task, so the new activity becomes the only one in the stack.
         startActivity(intent)
-        finish()  // Close the MainActivity so the user cannot go back to it
+        finish()
     }
 }
 

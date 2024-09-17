@@ -26,6 +26,10 @@ class PreferenceHelper(context: Context) {
         }
     }
 
+    fun getUserId(): String? {
+        return sharedPreferences.getString(KEY_USER_ID, null)
+    }
+
     fun saveRegisterUserSession(email: String, name: String,phone: String) {
         with(sharedPreferences.edit()) {
             putString(KEY_USER_EMAIL, email)
