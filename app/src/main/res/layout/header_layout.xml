@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FF0000"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/accountname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/black"
+        android:text="Soumik" />
+
+    <TextView
+        android:id="@+id/accountemail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/black"
+        android:text="soumikpaul@gmail.com"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/accountnumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/black"
+        android:text="9876543210"
+        android:textStyle="bold" />
+</LinearLayout>

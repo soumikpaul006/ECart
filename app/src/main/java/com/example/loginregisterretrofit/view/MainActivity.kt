@@ -2,10 +2,17 @@ package com.example.loginregisterretrofit.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.loginregisterretrofit.PreferenceHelper
+import com.example.loginregisterretrofit.R
 import com.example.loginregisterretrofit.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,3 +55,9 @@ class MainActivity : AppCompatActivity() {
         finish()  // Close the MainActivity so the user cannot go back to it
     }
 }
+
+
+
+
+
+

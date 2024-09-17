@@ -2,6 +2,7 @@ package com.example.loginregisterretrofit.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.loginregisterretrofit.ViewPagerAdapter
@@ -32,6 +33,7 @@ class ViewPagerActivity : AppCompatActivity() {
             fetchProducts(subcategoryID)
         }
     }
+
 
     private fun fetchProducts(scid: String) {
         val call = apiService.getSubCategory(scid)

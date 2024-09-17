@@ -8,7 +8,7 @@ import com.example.loginregisterretrofit.model.datalayer.Category
 import com.example.loginregisterretrofit.databinding.ProductViewBinding
 
 class CategoryAdapter(
-    private val catList:List<Category>,
+    private var catList:List<Category>,
     private val listener: OnCategoryClickListener
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>()
 {
