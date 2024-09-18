@@ -8,6 +8,8 @@ import com.example.loginregisterretrofit.model.datalayer.GetUserAddressResponse
 import com.example.loginregisterretrofit.model.datalayer.LoginUserRequest
 import com.example.loginregisterretrofit.model.datalayer.LoginUserResponse
 import com.example.loginregisterretrofit.model.datalayer.ProductCategoryResponse
+import com.example.loginregisterretrofit.model.datalayer.ProductDetailsResponse
+import com.example.loginregisterretrofit.model.datalayer.ProductSearchResponse
 import com.example.loginregisterretrofit.model.datalayer.SubCategoryProductResponse
 import com.example.loginregisterretrofit.model.datalayer.SubCategoryResponse
 import retrofit2.Call
@@ -40,7 +42,6 @@ interface ApiService {
     ):Call<ProductCategoryResponse>
 
 
-
     @GET("SubCategory")
     fun getSubCategory(
         @Query("category_id") scid: String
@@ -55,13 +56,18 @@ interface ApiService {
 
 
     //SEARCH PRODUCT
-
+    @GET("Product/search")
+    fun searchProducts(
+        @Query("query") searchText: String
+    ): Call<ProductSearchResponse>
 
 
 
     //PRODUCT DETAILS
-
-
+    @GET("Product/details/{product_id}")
+    fun getProductDetails(
+        @Path("product_id") pid:String
+    ):Call<ProductDetailsResponse>
 
 
     //ADD ADDRESS

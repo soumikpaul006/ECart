@@ -5,9 +5,14 @@ import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.loginregisterretrofit.SearchResultsAdapter
 import com.example.loginregisterretrofit.ViewPagerAdapter
 import com.example.loginregisterretrofit.model.datalayer.SubCategoryResponse
 import com.example.loginregisterretrofit.databinding.ActivityViewPagerBinding
+import com.example.loginregisterretrofit.model.datalayer.ProductSearchResponse
+import com.example.loginregisterretrofit.model.datalayer.ProductXX
 import com.example.loginregisterretrofit.model.networklayer.ApiClient
 import com.example.loginregisterretrofit.model.networklayer.ApiService
 import com.google.android.material.tabs.TabLayoutMediator
@@ -31,6 +36,16 @@ class ViewPagerActivity : AppCompatActivity() {
 
         if (subcategoryID != null) {
             fetchProducts(subcategoryID)
+        }
+
+
+        binding.btnSearch.setOnClickListener {
+            val searchText = binding.etSearch.text.toString()
+            if (searchText.isNotEmpty()) {
+                searchProducts(searchText)
+            } else {
+                Toast.makeText(this, "Please enter a search query", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -82,4 +97,45 @@ class ViewPagerActivity : AppCompatActivity() {
             }
         })
     }
+
+
+    private fun searchProducts(query: String) {
+
+        val call = apiService.searchProducts(query)
+
+        call.enqueue(object : Callback<ProductSearchResponse> {
+            override fun onResponse(
+                call: Call<ProductSearchResponse>,
+                response: Response<ProductSearchResponse>
+            ) {
+                if (!response.isSuccessful) {
+                    Toast.makeText(this@ViewPagerActivity, "Failed to search products", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                val searchResult: ProductSearchResponse? = response.body()
+
+                searchResult?.let {
+                    if (it.products.isNotEmpty()) {
+
+                        displaySearchResults(it.products)
+                    } else {
+                        Toast.makeText(this@ViewPagerActivity, "No products found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ProductSearchResponse>, t: Throwable) {
+                Toast.makeText(this@ViewPagerActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun displaySearchResults(products: List<ProductXX>) {
+        val recyclerView = RecyclerView(this)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = SearchResultsAdapter(products)
+        setContentView(recyclerView)
+    }
+
 }
