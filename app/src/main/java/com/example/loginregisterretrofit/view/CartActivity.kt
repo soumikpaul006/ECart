@@ -23,10 +23,11 @@ class CartActivity : AppCompatActivity() {
         binding=ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnCheckout.setOnClickListener{
+        binding.btnCheckout.setOnClickListener {
             val intent = Intent(this, CheckoutActivity::class.java)
             startActivity(intent)
         }
+
 
 
         if (savedInstanceState == null) {

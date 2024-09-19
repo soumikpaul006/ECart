@@ -23,7 +23,7 @@ import retrofit2.Response
 
 class AddressViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val apiService = ApiClient.retrofit.create(ApiService::class.java)
+    val apiService = ApiClient.retrofit.create(ApiService::class.java)
 
     // Function to fetch addresses for the user
     fun getAddressesForUser(userId: String): LiveData<List<Addresse>> {

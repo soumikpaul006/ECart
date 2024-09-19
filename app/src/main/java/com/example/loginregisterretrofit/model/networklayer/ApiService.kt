@@ -7,6 +7,8 @@ import com.example.loginregisterretrofit.model.datalayer.AddUserResponse
 import com.example.loginregisterretrofit.model.datalayer.GetUserAddressResponse
 import com.example.loginregisterretrofit.model.datalayer.LoginUserRequest
 import com.example.loginregisterretrofit.model.datalayer.LoginUserResponse
+import com.example.loginregisterretrofit.model.datalayer.OrderRequest
+import com.example.loginregisterretrofit.model.datalayer.OrderResponse
 import com.example.loginregisterretrofit.model.datalayer.ProductCategoryResponse
 import com.example.loginregisterretrofit.model.datalayer.ProductDetailsResponse
 import com.example.loginregisterretrofit.model.datalayer.ProductSearchResponse
@@ -85,11 +87,17 @@ interface ApiService {
     ): Call<GetUserAddressResponse>
 
     //PLACE ORDER
+    @Headers("Content-type: application/json")
+    @POST("/Order")
+    fun placeOrder(
+        @Body orderRequest: OrderRequest
+    ): Call<OrderResponse>
 
 
 
+    //Order Details
 
-    //LOGOUT
+
 
 
 

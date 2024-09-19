@@ -15,24 +15,15 @@ class PaymentFragment : Fragment() {
 
     private lateinit var radioGroupPayment: RadioGroup
 
-//    private lateinit var binding:FragmentPaymentBinding
+    private lateinit var binding:FragmentPaymentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_payment, container, false)
+        binding = FragmentPaymentBinding.inflate(inflater, container, false)
 
-        // Initialize the RadioGroup
-        radioGroupPayment = view.findViewById(R.id.radioGroupPayment)
-
-//        binding.btnNext.setOnClickListener {
-//            // Navigate to the SummaryFragment
-//
-//        }
-
-        // Set up any additional behavior if needed, like handling payment method selection
-        radioGroupPayment.setOnCheckedChangeListener { group, checkedId ->
+        binding.radioGroupPayment.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.rbCashOnDelivery -> {
 
@@ -49,6 +40,10 @@ class PaymentFragment : Fragment() {
             }
         }
 
-        return view
+        binding.btnNext.setOnClickListener {
+            (activity as CheckoutActivity).binding.viewPager.currentItem = 3
+        }
+
+        return binding.root
     }
 }

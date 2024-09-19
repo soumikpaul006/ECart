@@ -10,8 +10,9 @@ import com.example.loginregisterretrofit.model.datalayer.Product
 class CartAdapter(
     private val cartList: List<Product>,
     private val productDao: ProductDao,
-    private val updateTotalPriceCallback: (Double) -> Unit // Callback to notify when total price changes
+    private val updateTotalPriceCallback: (Double) -> Unit // callback to notify when total price changes
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val binding = CartItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,6 +27,10 @@ class CartAdapter(
         return cartList.size
     }
 
+    private fun getTotalPrice(): Double {
+        return cartList.sumOf { it.quantity * it.price.toDouble() }
+    }
+
     inner class CartViewHolder(private val binding: CartItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
@@ -33,7 +38,6 @@ class CartAdapter(
             binding.txtProductName.text = product.product_name
             binding.txtProductQuantity.text = "Quantity: ${product.quantity}"
             binding.txtProductPrice.text = "Price: $${String.format("%.2f", product.price.toDouble())}"
-
 
             binding.btnIncreaseQuantity.setOnClickListener {
                 product.quantity += 1
@@ -49,29 +53,23 @@ class CartAdapter(
             }
         }
 
-        // Function to update item views and update quantity in the database
+        // Function to update the product in the UI and database
         private fun updateItem(product: Product) {
 
             binding.txtProductQuantity.text = "Quantity: ${product.quantity}"
-
-            // Calculate and update the price for the individual product
             val totalPriceForProduct = product.quantity * product.price.toDouble()
             binding.txtProductPrice.text = "Price: $${String.format("%.2f", totalPriceForProduct)}"
 
-            // Update the product in the Room database
+            // Update the product in the database using a background thread
             Thread {
                 productDao.updateProduct(product)
             }.start()
 
-
-            // Notify the fragment or activity to update the total cart price
+            // Update the total price for all products in the cart
             updateTotalPriceCallback(getTotalPrice())
         }
-    }
 
-    // Function to calculate the total price of all items in the cart
-    private fun getTotalPrice(): Double {
-        return cartList.sumOf { it.quantity * it.price.toDouble() }
+
     }
 }
 
