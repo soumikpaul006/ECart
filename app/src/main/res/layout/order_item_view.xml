@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order ID: 1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtOrderAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address: 123 Main St" />
+
+    <TextView
+        android:id="@+id/txtOrderAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bill Amount: $100" />
+
+    <TextView
+        android:id="@+id/txtOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Date: 2024-09-19" />
+
+    <TextView
+        android:id="@+id/txtOrderStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: RECEIVED" />
+
+</LinearLayout>

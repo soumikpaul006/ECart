@@ -22,6 +22,9 @@ interface ProductDao {
     @Delete
     fun deleteProduct(product: Product)
 
+    @Query("DELETE FROM product")
+    fun clearCart()
+
     @Query("SELECT * FROM product")
     fun getAllCartItems(): LiveData<List<Product>>
 }

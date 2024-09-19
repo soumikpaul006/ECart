@@ -30,7 +30,6 @@ class UserPageActivity : AppCompatActivity(), OnCategoryClickListener, Navigatio
 
     private lateinit var preferenceHelper: PreferenceHelper
     private lateinit var binding: ActivityUserPageBinding
-//    private lateinit var adapter: CategoryAdapter
     private lateinit var drawerToggle: ActionBarDrawerToggle
     val apiService = ApiClient.retrofit.create(ApiService::class.java)
 
@@ -102,6 +101,7 @@ class UserPageActivity : AppCompatActivity(), OnCategoryClickListener, Navigatio
             }
             R.id.orders -> {
                 Toast.makeText(this, "Orders clicked", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, OrderActivity::class.java))
             }
             R.id.profile -> {
                 Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()

@@ -7,12 +7,13 @@ import com.example.loginregisterretrofit.model.datalayer.Addresse
 
 class AddressAdapter(
     private var addressList: List<Addresse>,
-    private var selectedPosition: Int = -1
+    private var selectedPosition: Int = -1,
+    private val onAddressSelected: (Addresse) -> Unit
 ) : RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() {
 
     inner class AddressViewHolder(private val binding: ItemAddressBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(address: Addresse, position: Int) {
 
+        fun bind(address: Addresse, position: Int) {
             binding.tvTitle.text = address.title
             binding.tvAddress.text = address.address
             binding.radioButton.isChecked = selectedPosition == position
@@ -20,6 +21,14 @@ class AddressAdapter(
             binding.radioButton.setOnClickListener {
                 selectedPosition = adapterPosition
                 notifyDataSetChanged()
+
+                // notify the fragment of the selected address
+                onAddressSelected(address)
+            }
+
+            // Handle item click (in case user clicks outside the radio button but still wants to select the address)
+            binding.root.setOnClickListener {
+                binding.radioButton.performClick()
             }
         }
     }
@@ -40,5 +49,6 @@ class AddressAdapter(
         notifyDataSetChanged()
     }
 }
+
 
 

@@ -17,6 +17,9 @@ import com.example.loginregisterretrofit.R
 import com.example.loginregisterretrofit.databinding.FragmentDeliveryBinding
 import com.example.loginregisterretrofit.model.datalayer.AddAddressRequest
 import com.example.loginregisterretrofit.model.datalayer.AddAddressResponse
+import com.example.loginregisterretrofit.model.datalayer.Address
+import com.example.loginregisterretrofit.model.datalayer.Addresse
+import com.example.loginregisterretrofit.model.datalayer.DeliveryAddress
 import com.example.loginregisterretrofit.model.datalayer.GetUserAddressResponse
 
 import com.example.loginregisterretrofit.viewmodel.AddressViewModel
@@ -31,6 +34,7 @@ class DeliveryFragment : Fragment() {
     private lateinit var adapter: AddressAdapter
     private lateinit var addressViewModel: AddressViewModel
     private lateinit var preferenceHelper: PreferenceHelper
+    private var selectedAddress: DeliveryAddress? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,32 +47,45 @@ class DeliveryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        // Initialize ViewModel and PreferenceHelper
         addressViewModel = ViewModelProvider(this)[AddressViewModel::class.java]
         preferenceHelper = PreferenceHelper(requireContext())
 
-
         val userId = preferenceHelper.getUserId() ?: ""
 
+        // Initialize the adapter with the callback to capture the selected address
+        adapter = AddressAdapter(emptyList(), onAddressSelected = { address ->
+            selectedAddress = DeliveryAddress(title = address.title, address = address.address)
+        })
 
-        adapter = AddressAdapter(emptyList())
+
         binding.recyclerViewAddresses.adapter = adapter
         binding.recyclerViewAddresses.layoutManager = LinearLayoutManager(requireContext())
 
-        // fetch addresses for the particular user and update the adapter
+        // Fetch addresses for the particular user and update the adapter
         addressViewModel.getAddressesForUser(userId).observe(viewLifecycleOwner) { addresses ->
             adapter.updateAddressList(addresses)
         }
+
 
         binding.btnAddAddress.setOnClickListener {
             showAddAddressDialog(userId)
         }
 
-        // proceed to the next step (payment) with selected address
-        binding.btnNext.setOnClickListener {
-            (activity as CheckoutActivity).binding.viewPager.currentItem = 2
 
+        binding.btnNext.setOnClickListener {
+            if (selectedAddress != null) {
+                // Pass the selected address to CheckoutActivity
+                (activity as CheckoutActivity).selectedAddress = selectedAddress!!
+
+                // Move to the PaymentFragment
+                (activity as CheckoutActivity).binding.viewPager.currentItem = 2
+            } else {
+                Toast.makeText(requireContext(), "Please select an address", Toast.LENGTH_SHORT).show()
+            }
         }
+
+
     }
 
     private fun showAddAddressDialog(userId: String) {

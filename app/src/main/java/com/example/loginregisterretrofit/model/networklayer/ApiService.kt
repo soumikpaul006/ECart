@@ -14,6 +14,7 @@ import com.example.loginregisterretrofit.model.datalayer.ProductDetailsResponse
 import com.example.loginregisterretrofit.model.datalayer.ProductSearchResponse
 import com.example.loginregisterretrofit.model.datalayer.SubCategoryProductResponse
 import com.example.loginregisterretrofit.model.datalayer.SubCategoryResponse
+import com.example.loginregisterretrofit.model.datalayer.UserOrdersResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -88,14 +89,17 @@ interface ApiService {
 
     //PLACE ORDER
     @Headers("Content-type: application/json")
-    @POST("/Order")
+    @POST("Order")
     fun placeOrder(
         @Body orderRequest: OrderRequest
     ): Call<OrderResponse>
 
-
-
     //Order Details
+
+    @GET("Order/userOrders/{user_id}")
+    fun getUserOrders(
+        @Path("user_id") userId: Int
+    ):Call<UserOrdersResponse>
 
 
 
