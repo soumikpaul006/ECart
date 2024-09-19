@@ -38,7 +38,7 @@ class PaymentFragment : Fragment() {
 
         binding.btnNext.setOnClickListener {
             if (selectedPaymentMethod.isNotEmpty()) {
-                // Store the selected payment method in CheckoutActivity
+
 
 //                Log.d("PaymentFragment", "Selected Payment Method: $selectedPaymentMethod")
 //                (activity as CheckoutActivity).selectedPaymentMethod = selectedPaymentMethod
@@ -46,7 +46,7 @@ class PaymentFragment : Fragment() {
 
                 val viewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
                 viewModel.setSelectedPaymentMethod(selectedPaymentMethod)
-//                Log.d("PaymentFragment", "Selected Payment Method: $selectedPaymentMethod")
+
 
                 (activity as CheckoutActivity).binding.viewPager.currentItem = 3
             } else {

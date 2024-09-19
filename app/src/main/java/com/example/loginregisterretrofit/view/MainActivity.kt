@@ -30,9 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         preferenceHelper = PreferenceHelper(this)
 
-        // Check if the user is already logged in
+
         if (preferenceHelper.isLoggedIn()) {
-            // If user is logged in, redirect to UserPageActivity
             navigateToUserPage()
 
         } else {

@@ -13,9 +13,7 @@ import com.example.loginregisterretrofit.databinding.ActivityCartBinding
 
 class CartActivity : AppCompatActivity() {
 
-
     private lateinit var binding:ActivityCartBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +25,6 @@ class CartActivity : AppCompatActivity() {
             val intent = Intent(this, CheckoutActivity::class.java)
             startActivity(intent)
         }
-
-
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

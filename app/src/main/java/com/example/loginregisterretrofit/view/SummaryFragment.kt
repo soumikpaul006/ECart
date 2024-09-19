@@ -67,7 +67,6 @@ class SummaryFragment : Fragment() {
     }
 
     private fun setupUI() {
-
         binding.txtSelectedAddress.text = "Delivery Address: ${selectedAddress.title}, ${selectedAddress.address}"
 
         cartViewModel = ViewModelProvider(requireActivity())[CartViewModel::class.java]
@@ -117,6 +116,13 @@ class SummaryFragment : Fragment() {
 
                     Toast.makeText(requireContext(), "Order placed successfully! Order ID: $orderId", Toast.LENGTH_SHORT).show()
 
+
+                    clearCart()
+
+
+                    hideSummaryUI()
+
+
                     val intent = Intent(requireContext(), OrderActivity::class.java)
                     intent.putExtra("order_id", orderId)
                     startActivity(intent)
@@ -131,7 +137,25 @@ class SummaryFragment : Fragment() {
             }
         })
     }
+
+    private fun clearCart() {
+        Thread {
+            productDao.clearCart()
+        }.start()
+
+        adapter.setCartList(emptyList())
+        binding.txtTotalPrice.text = "Total Price: $0.00"
+    }
+
+    private fun hideSummaryUI() {
+        binding.txtSelectedAddress.visibility = View.GONE
+        binding.txtSelectedPaymentMethod.visibility = View.GONE
+        binding.recyclerViewCartItems.visibility = View.GONE
+        binding.txtTotalPrice.visibility = View.GONE
+        binding.btnPlaceOrder.visibility = View.GONE
+    }
 }
+
 
 
 

@@ -53,7 +53,6 @@ class SubCategoryAdapter(
                 }
 
                 root.setOnClickListener {
-                    // Navigate to ProductDetailsActivity
                     val context = root.context
                     val intent = Intent(context, ProductDetailsActivity::class.java)
                     intent.putExtra("product_id", product.product_id)

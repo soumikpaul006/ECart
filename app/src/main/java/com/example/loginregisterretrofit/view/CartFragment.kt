@@ -89,8 +89,6 @@ class CartFragment : Fragment() {
         binding.txtTotalPrice.text = "Total Price: $${String.format("%.2f", totalPrice)}"
     }
 
-
-
     private fun deleteProduct(product: Product) {
         lifecycleScope.launch(Dispatchers.IO) {
             productDao.deleteProduct(product)

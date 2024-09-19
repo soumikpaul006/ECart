@@ -80,7 +80,6 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
-    // Navigate to user page
     private fun navigateToUserPage() {
         val intent = Intent(this@RegisterActivity, UserPageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

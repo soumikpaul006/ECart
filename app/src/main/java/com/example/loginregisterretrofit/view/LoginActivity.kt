@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    // Check if the user is already logged in using shared preferences
+
     private fun checkPreferenceExist() {
         if (preferenceHelper.isLoggedIn()) {
             navigateToUserPage()

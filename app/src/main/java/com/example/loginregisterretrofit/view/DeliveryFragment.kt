@@ -47,7 +47,7 @@ class DeliveryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize ViewModel and PreferenceHelper
+
         addressViewModel = ViewModelProvider(this)[AddressViewModel::class.java]
         preferenceHelper = PreferenceHelper(requireContext())
 
